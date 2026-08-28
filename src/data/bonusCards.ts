@@ -9,7 +9,7 @@ export const BONUS_CARD_DEFS: Record<BonusCardKind, BonusCardDef> = {
   },
   comfortable: {
     kind: 'comfortable',
-    name: '快適',
+    name: '快便',
     effectText: '獲得できる黒豆が25%アップする',
     triggerText: '獲得した以降、毎ターン自動で適用',
   },

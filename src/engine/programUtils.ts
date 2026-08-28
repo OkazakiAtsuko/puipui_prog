@@ -123,21 +123,18 @@ export function removeNode(tree: ProgramNode[], nodeId: string): ProgramNode[] {
   return clone
 }
 
-export function moveNode(tree: ProgramNode[], nodeId: string, destContainerId: string, destIndex: number): ProgramNode[] {
+// 同じ配列(コンテナ)内で、1つ前または1つ後ろのカードと入れ替える。
+export function swapAdjacent(tree: ProgramNode[], nodeId: string, direction: 'up' | 'down'): ProgramNode[] {
   const clone = cloneProgram(tree)
   const loc = locate(clone, nodeId)
   if (!loc) return tree
-  const srcContainer = locateContainer(clone, loc.containerId)
-  if (!srcContainer) return tree
-  const [node] = srcContainer.splice(loc.index, 1)
-  const destContainer = locateContainer(clone, destContainerId)
-  if (!destContainer) {
-    srcContainer.splice(loc.index, 0, node)
-    return tree
-  }
-  let insertAt = destIndex
-  if (loc.containerId === destContainerId && loc.index < destIndex) insertAt -= 1
-  destContainer.splice(Math.max(0, Math.min(insertAt, destContainer.length)), 0, node)
+  const container = locateContainer(clone, loc.containerId)
+  if (!container) return tree
+  const targetIndex = direction === 'up' ? loc.index - 1 : loc.index + 1
+  if (targetIndex < 0 || targetIndex >= container.length) return tree
+  const tmp = container[loc.index]
+  container[loc.index] = container[targetIndex]
+  container[targetIndex] = tmp
   return clone
 }
 

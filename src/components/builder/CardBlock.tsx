@@ -1,5 +1,3 @@
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import { CARD_DEFS, CONDITION_KINDS } from '../../data/cards'
 import { describeNode } from '../../engine/describeNode'
 import { getGotoCandidates } from '../../engine/programUtils'
@@ -9,33 +7,50 @@ import { ProgramSequence } from './ProgramSequence'
 
 interface Props {
   node: ProgramNode
-  containerId: string
-  index: number
   depth: number
+  isFirst: boolean
+  isLast: boolean
 }
 
-export function CardBlock({ node, containerId, index, depth }: Props) {
+function ReorderButtons({ nodeId, isFirst, isLast }: { nodeId: string; isFirst: boolean; isLast: boolean }) {
+  const { moveCard } = useBuilder()
+  return (
+    <span className="card-block__reorder">
+      <button
+        type="button"
+        disabled={isFirst}
+        onClick={(e) => {
+          e.stopPropagation()
+          moveCard(nodeId, 'up')
+        }}
+        aria-label="上へ"
+      >
+        ↑
+      </button>
+      <button
+        type="button"
+        disabled={isLast}
+        onClick={(e) => {
+          e.stopPropagation()
+          moveCard(nodeId, 'down')
+        }}
+        aria-label="下へ"
+      >
+        ↓
+      </button>
+    </span>
+  )
+}
+
+export function CardBlock({ node, depth, isFirst, isLast }: Props) {
   const { program, displayInfo, updateCondition, updateVarValue, updateGotoTarget, removeNode } = useBuilder()
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: node.id,
-    data: { source: 'program', containerId, index, node },
-  })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  }
-
   const info = displayInfo.get(node.id)
 
   if (node.type === 'process') {
     const def = CARD_DEFS[node.kind]
     return (
-      <div className="card-block card-block--process" ref={setNodeRef} style={style}>
-        <span className="card-block__handle" {...attributes} {...listeners}>
-          ⠿
-        </span>
+      <div className="card-block card-block--process">
+        <ReorderButtons nodeId={node.id} isFirst={isFirst} isLast={isLast} />
         <span className="card-block__number">#{info?.number}</span>
         <span className="card-block__label">{def.label}</span>
         <span className="card-block__cost">{def.cost}黒豆</span>
@@ -49,10 +64,8 @@ export function CardBlock({ node, containerId, index, depth }: Props) {
   if (node.type === 'goto') {
     const candidates = getGotoCandidates(program, node.id)
     return (
-      <div className="card-block card-block--goto" ref={setNodeRef} style={style}>
-        <span className="card-block__handle" {...attributes} {...listeners}>
-          ⠿
-        </span>
+      <div className="card-block card-block--goto">
+        <ReorderButtons nodeId={node.id} isFirst={isFirst} isLast={isLast} />
         <span className="card-block__number">#{info?.number}</span>
         <span className="card-block__label">{CARD_DEFS.goto.label}</span>
         <select value={node.targetId ?? ''} onChange={(e) => updateGotoTarget(node.id, e.target.value || null)}>
@@ -74,11 +87,9 @@ export function CardBlock({ node, containerId, index, depth }: Props) {
   const conditionDef = CARD_DEFS[node.condition]
   const cost = CARD_DEFS.ifBranch.cost + conditionDef.cost
   return (
-    <div className="card-block card-block--judgment" ref={setNodeRef} style={style}>
+    <div className="card-block card-block--judgment">
       <div className="card-block__header">
-        <span className="card-block__handle" {...attributes} {...listeners}>
-          ⠿
-        </span>
+        <ReorderButtons nodeId={node.id} isFirst={isFirst} isLast={isLast} />
         <span className="card-block__number">#{info?.number}</span>
         <span className="card-block__label">もし</span>
         <select value={node.condition} onChange={(e) => updateCondition(node.id, e.target.value as ConditionKind)}>

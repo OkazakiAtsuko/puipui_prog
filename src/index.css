@@ -290,20 +290,19 @@ button {
 }
 
 .palette-item {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
   background: var(--color-panel-alt);
   border: 1px solid var(--color-border);
-  cursor: grab;
-  touch-action: none;
+  cursor: pointer;
   transition: background-color 0.12s ease, border-color 0.12s ease;
 }
 
 .palette-item:hover {
   background: var(--color-accent-soft);
   border-color: var(--color-accent);
-}
-
-.palette-item--dragging {
-  opacity: 0.4;
 }
 
 .palette-item__cost,
@@ -340,12 +339,15 @@ button {
   min-height: 40px;
   padding: 6px;
   border-radius: var(--radius-sm);
-  transition: background-color 0.15s;
+  outline: 2px dashed transparent;
+  outline-offset: -2px;
+  cursor: pointer;
+  transition: background-color 0.15s, outline-color 0.15s;
 }
 
-.program-sequence--over {
+.program-sequence--active {
   background: var(--color-accent-soft);
-  outline: 2px dashed var(--color-accent);
+  outline-color: var(--color-accent);
 }
 
 .program-sequence__placeholder {
@@ -396,10 +398,30 @@ button {
   flex-wrap: wrap;
 }
 
-.card-block__handle {
-  cursor: grab;
-  color: var(--color-muted);
-  touch-action: none;
+.card-block__reorder {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card-block__reorder button {
+  background: var(--color-panel-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text);
+  font-size: 0.65rem;
+  line-height: 1;
+  padding: 1px 5px;
+}
+
+.card-block__reorder button:hover:not(:disabled) {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+}
+
+.card-block__reorder button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 .card-block__number {
@@ -500,14 +522,6 @@ button {
 .run-button:disabled {
   background: var(--color-border);
   cursor: not-allowed;
-}
-
-.drag-overlay-card {
-  background: var(--color-panel);
-  border: 2px solid var(--color-accent);
-  border-radius: var(--radius-sm);
-  padding: 8px 14px;
-  font-size: 0.85rem;
 }
 
 /* ===== 地図 ===== */
@@ -649,11 +663,16 @@ button {
   margin-top: 12px;
 }
 
-.execution-controls button {
+.execution-controls button:not(.run-button) {
   background: var(--color-panel-alt);
   border: 1px solid var(--color-border);
   border-radius: 999px;
   padding: 6px 14px;
+}
+
+.execution-controls .run-button {
+  width: auto;
+  padding: 8px 20px;
 }
 
 .speed-buttons {

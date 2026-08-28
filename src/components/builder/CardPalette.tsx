@@ -1,24 +1,15 @@
-import { useDraggable } from '@dnd-kit/core'
 import { CARD_DEFS, CONDITION_KINDS, PROCESS_KINDS } from '../../data/cards'
 import type { CardKind } from '../../types/game'
+import { useBuilder } from './BuilderContext'
 
 function PaletteItem({ kind }: { kind: CardKind }) {
   const def = CARD_DEFS[kind]
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-    id: `palette:${kind}`,
-    data: { source: 'palette', kind },
-  })
+  const { addCard } = useBuilder()
   return (
-    <div
-      className={`palette-item${isDragging ? ' palette-item--dragging' : ''}`}
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      title={def.description}
-    >
+    <button type="button" className="palette-item" onClick={() => addCard(kind)} title={def.description}>
       <span className="palette-item__label">{def.label}</span>
       <span className="palette-item__cost">{def.cost}黒豆</span>
-    </div>
+    </button>
   )
 }
 
@@ -39,6 +30,7 @@ export function CardPalette() {
 
       <div className="card-palette__category">
         <h3>処理</h3>
+        <p className="card-palette__hint">クリックすると、選択中の場所の一番下に追加されます。</p>
         {PROCESS_KINDS.map((k) => (
           <PaletteItem key={k} kind={k} />
         ))}
