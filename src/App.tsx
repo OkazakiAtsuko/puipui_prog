@@ -3,12 +3,15 @@ import { DifficultySelectScreen } from './components/screens/DifficultySelectScr
 import { ExecutionScreen } from './components/screens/ExecutionScreen'
 import { ProgramBuilderScreen } from './components/screens/ProgramBuilderScreen'
 import { ResultScreen } from './components/screens/ResultScreen'
+import { RulesScreen } from './components/screens/RulesScreen'
 import { GameProvider, useGame } from './state/GameContext'
 
 function GameScreens() {
   const { state } = useGame()
 
   switch (state.phase) {
+    case 'rules':
+      return <RulesScreen />
     case 'difficultySelect':
       return <DifficultySelectScreen />
     case 'bonusSelect':

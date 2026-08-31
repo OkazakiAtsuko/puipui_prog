@@ -29,9 +29,9 @@ export const CARD_DEFS: Record<CardKind, CardDef> = {
   start: { kind: 'start', category: 'terminal', label: '開始', cost: 0, description: 'プログラムの開始を表します。' },
   end: { kind: 'end', category: 'terminal', label: '終了', cost: 0, description: 'プログラムの終了を表します。' },
 
-  move1: { kind: 'move1', category: 'process', label: '1マス進む', cost: 1, description: 'うさぎを1マス前に進めます。' },
-  move3: { kind: 'move3', category: 'process', label: '3マス進む', cost: 2, description: 'うさぎを3マス前に進めます。' },
-  move5: { kind: 'move5', category: 'process', label: '5マス進む', cost: 3, description: 'うさぎを5マス前に進めます。' },
+  move1: { kind: 'move1', category: 'process', label: '1マス進む', cost: 1, description: 'ノマドくんを1マス前に進めます。' },
+  move3: { kind: 'move3', category: 'process', label: '3マス進む', cost: 2, description: 'ノマドくんを3マス前に進めます。' },
+  move5: { kind: 'move5', category: 'process', label: '5マス進む', cost: 3, description: 'ノマドくんを5マス前に進めます。' },
   turnRight: { kind: 'turnRight', category: 'process', label: '右に90度回転', cost: 1, description: 'その場で右に90度回転します。' },
   turnLeft: { kind: 'turnLeft', category: 'process', label: '左に90度回転', cost: 1, description: 'その場で左に90度回転します。' },
   setVar0: { kind: 'setVar0', category: 'process', label: '変数に0セット', cost: 1, description: '変数の値を0にします。' },

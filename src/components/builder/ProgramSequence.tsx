@@ -16,7 +16,12 @@ export function ProgramSequence({ containerId, nodes, depth, laneLabel }: Props)
   return (
     <div
       className={`program-sequence${isActive ? ' program-sequence--active' : ''}`}
-      onClick={() => setActiveContainerId(containerId)}
+      onClick={(e) => {
+        // 入れ子になったYes/Noレーンをクリックした際、外側(ルート列など)のonClickにまで
+        // イベントが伝播して選択が上書きされてしまうのを防ぐ。
+        e.stopPropagation()
+        setActiveContainerId(containerId)
+      }}
     >
       {laneLabel && (
         <div className={`program-sequence__lane-label program-sequence__lane-label--${laneLabel.toLowerCase()}`}>

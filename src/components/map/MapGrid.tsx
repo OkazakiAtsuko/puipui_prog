@@ -1,17 +1,6 @@
+import { FOOD_EMOJI_FALLBACK, FOOD_IMAGE, ROBOT_IMAGE_SRC, ROBOT_NAME } from '../../data/foodAssets'
 import { FOOD_LABEL } from '../../types/game'
-import type { Direction, FoodItem, MapDefinition, FoodType } from '../../types/game'
-
-const FOOD_EMOJI: Partial<Record<FoodType, string>> = {
-  goldenCarrot: '🥕',
-}
-
-const FOOD_IMAGE: Partial<Record<FoodType, string>> = {
-  carrot: '/img/ninjin.png',
-  apple: '/img/ringo.png',
-  piman: '/img/pi-man.png',
-}
-
-const ROBOT_IMAGE_SRC = '/img/nomadkun.png'
+import type { Direction, FoodItem, MapDefinition } from '../../types/game'
 
 const DIR_ROTATION: Record<Direction, number> = { N: 0, E: 90, S: 180, W: 270 }
 
@@ -44,13 +33,13 @@ export function MapGrid({ map, foods, robotPos, robotDir }: Props) {
               {FOOD_IMAGE[food.type] ? (
                 <img src={FOOD_IMAGE[food.type]} alt={FOOD_LABEL[food.type]} className="map-cell__food-image" />
               ) : (
-                FOOD_EMOJI[food.type]
+                FOOD_EMOJI_FALLBACK[food.type]
               )}
             </span>
           )}
           {isRobotHere && (
             <span className="map-cell__robot" style={{ transform: `rotate(${DIR_ROTATION[robotDir]}deg)` }}>
-              <img src={ROBOT_IMAGE_SRC} alt="うさぎ" className="map-cell__robot-image" />
+              <img src={ROBOT_IMAGE_SRC} alt={ROBOT_NAME} className="map-cell__robot-image" />
             </span>
           )}
         </div>,

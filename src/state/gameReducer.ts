@@ -4,7 +4,7 @@ import { computeProgramCost, computeTurnResult } from '../engine/scoring'
 import { runTurn } from '../engine/executor'
 import type { BonusCardKind, Direction, FoodItem, MapDefinition, ProgramNode, TurnResultBreakdown, TurnTrace } from '../types/game'
 
-export type GamePhase = 'difficultySelect' | 'bonusSelect' | 'build' | 'execute' | 'result'
+export type GamePhase = 'rules' | 'difficultySelect' | 'bonusSelect' | 'build' | 'execute' | 'result'
 
 export interface GameState {
   phase: GamePhase
@@ -27,6 +27,7 @@ export interface GameState {
 
 export type GameAction =
   | { type: 'START_GAME' }
+  | { type: 'ACKNOWLEDGE_RULES' }
   | { type: 'SELECT_DIFFICULTY'; mapId: string }
   | { type: 'PICK_BONUS_CARD'; kind: BonusCardKind }
   | { type: 'RUN_PROGRAM'; program: ProgramNode[] }
@@ -44,12 +45,12 @@ function drawDraft(count: number): BonusCardKind[] {
   return draft
 }
 
-export function createInitialState(): GameState {
+export function createInitialState(options?: { skipRules?: boolean }): GameState {
   // 難易度選択前なので地図は仮のプレースホルダー(difficultySelect画面では使われない)。
   const map = MAP_DEFINITIONS[0]
   const foods = placeFoods(map)
   return {
-    phase: 'difficultySelect',
+    phase: options?.skipRules ? 'difficultySelect' : 'rules',
     map,
     foods,
     robotPos: { x: map.start.x, y: map.start.y },
@@ -71,7 +72,10 @@ export function createInitialState(): GameState {
 export function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case 'START_GAME':
-      return createInitialState()
+      return createInitialState({ skipRules: true })
+
+    case 'ACKNOWLEDGE_RULES':
+      return { ...state, phase: 'difficultySelect' }
 
     case 'SELECT_DIFFICULTY': {
       const map = MAP_DEFINITIONS.find((m) => m.id === action.mapId) ?? MAP_DEFINITIONS[0]

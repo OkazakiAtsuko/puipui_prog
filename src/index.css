@@ -83,6 +83,84 @@ button {
   cursor: pointer;
 }
 
+/* ===== あそびかた画面 ===== */
+
+.rules-screen {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.rules-section {
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-organic-alt);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.rules-section h3 {
+  margin: 0 0 10px;
+  color: var(--color-accent-dark);
+}
+
+.rules-section p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.rules-section ol {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.9;
+}
+
+.rules-food-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.rules-food-list__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-panel-alt);
+  border-radius: var(--radius-sm);
+  padding: 14px 8px;
+}
+
+.rules-food-list__icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.rules-food-list__icon img {
+  width: 2em;
+  height: 2em;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  display: block;
+}
+
+.rules-food-list__label {
+  font-weight: bold;
+}
+
+.rules-food-list__value {
+  color: var(--color-accent-dark);
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.rules-start-button {
+  max-width: 280px;
+  margin: 8px auto 0;
+}
+
 /* ===== 難易度選択画面 ===== */
 
 .difficulty-grid {
